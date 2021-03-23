@@ -1,0 +1,36 @@
+﻿@model IPTURetornoCalculoViewModel
+
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Cálculo de IPTU</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>Inscrição imóvel</th>
+            <th>Data vencimento</th>
+            <th>Descrição</th>
+            <th>Valor</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var data in Model.Impostos)
+        {
+        <tr>
+            <td>@data.InscricaoImovel</td>
+            <td>@data.DataVencimento</td>
+            <td>@data.Descricao</td>
+            <td>@data.Valor</td>
+        </tr>
+        }
+    </tbody>
+
+</table>
+
+
+
+
+

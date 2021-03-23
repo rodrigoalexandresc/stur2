@@ -1,0 +1,21 @@
+﻿@model IPTUConsultaViewModel
+
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Consulta de IPTU</h1>
+
+@using (Html.BeginForm())
+{
+    @Html.EditorFor(m => m.DataInicial)
+
+    @Html.EditorFor(m => m.DataFinal)
+
+    <input type="submit" value="Pesquisar" />
+}
+
+
+
+

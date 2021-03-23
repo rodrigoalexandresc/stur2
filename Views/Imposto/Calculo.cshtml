@@ -1,0 +1,23 @@
+﻿@model IPTUCalculoViewModel
+
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Cálculo de IPTU</h1>
+
+@using (Html.BeginForm())
+{
+    @Html.LabelFor(m => m.AnoBase)
+    @Html.EditorFor(m => m.AnoBase)
+
+    @Html.LabelFor(m => m.InscricaoImovel)
+    @Html.EditorFor(m => m.InscricaoImovel)
+
+    <input type="submit" value="Processar" />
+}
+
+
+
+

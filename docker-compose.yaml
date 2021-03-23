@@ -1,0 +1,12 @@
+version: "3.4"
+
+services:  
+  stur:
+    image: stur2-image
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports: 
+      - "6001:6001"
+    environment: 
+      ASPNETCORE_ENVIRONMENT: Development            
