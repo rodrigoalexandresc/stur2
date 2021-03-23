@@ -29,6 +29,12 @@ namespace STUR_mvc.Models {
             Valor = (AreaConstruida * 5.20m) + (AreaTerreno * 1.15m); 
         }
 
+        public void AplicarReajuste(decimal pReajuste) 
+        {        
+            if (pReajuste == 0) return;
+            Valor = Valor * (1 + (pReajuste/100));        
+        }
+
         public int Id { get; set; }
         public string CPFOuCNPJ { get; set; }
         public decimal Valor { get; set; }

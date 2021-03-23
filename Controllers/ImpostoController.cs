@@ -42,7 +42,7 @@ namespace STUR_mvc.Controllers
         public async Task<IActionResult> Calculo(IPTUCalculoViewModel viewModel)
         {
             //processamento iptu
-            var impostosCalculados = await iPTUCalculoService.CalcularIPTU(viewModel.AnoBase, viewModel.InscricaoImovel);
+            var impostosCalculados = await iPTUCalculoService.CalcularIPTU(viewModel.AnoBase, viewModel.InscricaoImovel, viewModel.Reajuste);
             var retorno = new IPTURetornoCalculoViewModel { Impostos = impostosCalculados };
             return View("RetornoCalculo", retorno);
         }

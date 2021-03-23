@@ -1,4 +1,5 @@
 ﻿using Confluent.Kafka;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using STUR_mvc.Models;
 using System;
@@ -18,24 +19,26 @@ namespace STUR_mvc.Services
             this.dbContext = dbContext;
             this.kafkaConfig = kafkaConfig;
         }
-        public async Task<IList<Imposto>> CalcularIPTU(int anoBase, string inscricaoImovel)
+        public async Task<IList<Imposto>> CalcularIPTU(int anoBase, string inscricaoImovel, decimal reajuste)
         {
             var impostosCalculados = new List<Imposto>();
             var dataCalculo = new DateTime(anoBase, 2, 20);
-            var propriedadesCalculo = SelecionarPropriedadas(anoBase, inscricaoImovel);
+            var propriedadesCalculo = SelecionarPropriedades(anoBase, inscricaoImovel);
 
-            foreach (var infoGeo in propriedadesCalculo.GroupBy(g => g.InscricaoImovel))
+            foreach (var lote in propriedadesCalculo.GroupBy(g => g.InscricaoImovel))
             {
-                var ultimaInfoGeo = infoGeo.OrderByDescending(o => o.DataAtualizacao).FirstOrDefault();
+                var ultimaInfoGeo = lote.OrderByDescending(o => o.DataAtualizacao).FirstOrDefault();
                 var chave = ImpostoChave.GerarChave(ultimaInfoGeo.InscricaoImovel, dataCalculo);
 
                 var imposto = dbContext.Impostos.FirstOrDefault(w => w.Chave == chave) 
                     ?? new Imposto(ultimaInfoGeo.InscricaoImovel, dataCalculo);
                 
+                imposto.CPFOuCNPJ = ultimaInfoGeo.Proprietario.FirstOrDefault().CPFouCNPJ;
                 imposto.AreaConstruida = ultimaInfoGeo.AreaConstruida;
                 imposto.AreaTerreno = ultimaInfoGeo.AreaTerreno;
                 imposto.Descricao = "IPTU ano base " + anoBase;
                 imposto.CalcularValor();
+                imposto.AplicarReajuste(reajuste);
 
                 impostosCalculados.Add(imposto);
 
@@ -77,15 +80,15 @@ namespace STUR_mvc.Services
             }
         }
 
-        private IList<Lote> SelecionarPropriedadas(int anoBase, string inscricaoImovel)
+        private IList<Lote> SelecionarPropriedades(int anoBase, string inscricaoImovel)
         {
             var propriedadesCalculo = new List<Lote>();
             if (!string.IsNullOrEmpty(inscricaoImovel))
             {
-                return dbContext.Lotes.Where(w => w.InscricaoImovel == inscricaoImovel && w.DataAtualizacao.Year <= anoBase).ToList();
+                return dbContext.Lotes.Include(i => i.Proprietario).Where(w => w.Proprietario != null && (w.InscricaoImovel == inscricaoImovel && w.DataAtualizacao.Year <= anoBase)).ToList();
             }
             
-            return  dbContext.Lotes.Where(w => w.DataAtualizacao.Year <=  anoBase).ToList();
+            return  dbContext.Lotes.Include(i => i.Proprietario).Where(w => w.Proprietario != null && (w.DataAtualizacao.Year <=  anoBase)).ToList();
         }
     }
 }

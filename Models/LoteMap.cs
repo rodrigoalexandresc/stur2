@@ -17,4 +17,17 @@ namespace STUR_mvc.Models
             entityBuilder.Property(x => x.InscricaoImovel).HasColumnName("inscricaoimovel");
         }
     }
+
+    public class LoteProprietarioMap {
+        public LoteProprietarioMap(EntityTypeBuilder<LoteProprietario> entityBuilder)
+        {
+            entityBuilder.HasKey(x => x.Id);
+            entityBuilder.ToTable("loteproprietario");
+
+            entityBuilder.Property(x => x.Id).HasColumnName("id");
+            entityBuilder.Property(x => x.CPFouCNPJ).HasColumnName("cpfoucnpj");
+            entityBuilder.Property(x => x.LoteId).HasColumnName("loteid");
+            entityBuilder.HasOne(x => x.Lote).WithMany(o => o.Proprietario);
+        }
+    }
 }

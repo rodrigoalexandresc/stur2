@@ -11,6 +11,7 @@ namespace STUR_mvc.Models {
 
         public DbSet<Imposto> Impostos { get; set; }
         public DbSet<Lote> Lotes { get; set; }
+        public DbSet<LoteProprietario> Proprietarios { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -18,6 +19,7 @@ namespace STUR_mvc.Models {
 
             new ImpostoMap(modelBuilder.Entity<Imposto>());
             new LoteMap(modelBuilder.Entity<Lote>());
+            new LoteProprietarioMap(modelBuilder.Entity<LoteProprietario>());
         }
     }
 

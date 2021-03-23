@@ -8,5 +8,7 @@ namespace STUR_mvc.Models
         public int AnoBase { get; set; }
         [Display(Name = "Inscrição Imóvel")]
         public string InscricaoImovel { get; set; }
+        [Display(Name = "Reajuste")]
+        public decimal Reajuste { get; set; }
     }
 }
