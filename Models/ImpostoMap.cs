@@ -11,6 +11,7 @@ namespace STUR_mvc.Models
             entityBuilder.ToTable("imposto");
 
             entityBuilder.Property(x => x.Id).HasColumnName("id");
+            entityBuilder.Property(x => x.CPFOuCNPJ).HasColumnName("cpfoucnpj");
             entityBuilder.Property(x => x.DataVencimento).HasColumnName("datavencimento");
             entityBuilder.Property(x => x.AreaConstruida).HasColumnName("areaconstruida");
             entityBuilder.Property(x => x.AreaTerreno).HasColumnName("areaterreno");

@@ -30,6 +30,7 @@ namespace STUR_mvc.Models {
         }
 
         public int Id { get; set; }
+        public string CPFOuCNPJ { get; set; }
         public decimal Valor { get; set; }
         public string InscricaoImovel { get; set; }
         public DateTime DataVencimento { get; set; }

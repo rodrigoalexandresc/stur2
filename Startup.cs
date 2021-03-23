@@ -35,6 +35,8 @@ namespace stur2
                 options.UseNpgsql(Configuration.GetConnectionString("DbSTURConnection")));
 
             services.AddScoped<IPTUCalculoService>();            
+
+            services.AddHostedService<LoteAtualizadoMessageHandler>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
